@@ -157,8 +157,6 @@ void afficherGrille(Grille * g)
 		{
 			if(g->plateau[i][j].etat == 1)
 				printf("X");
-			else if(g->plateau[i][j].marquer == 1)
-				printf("M");
 			else
 				printf("-");
 		}

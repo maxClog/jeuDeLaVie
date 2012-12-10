@@ -31,6 +31,60 @@ Grille * init(int h, int l)
 	return g;
 }
 
+Grille * evolution(Grille * g)
+{
+	int i, j, k, fk, l, fl, nbc; 
+	
+	for( i=0; i<(g->i_fin - g->i_debut); i++ )
+	{
+		for( j=0; j<(g->j_fin - g->j_debut); j++ )
+		{
+			// Check de la case actuelle 
+			nbc = 0; 
+			g->plateau[i][j].petat = g->plateau[i][j].etat; 
+
+			for( k= (i==0 ? 0 : i-1), fk = (i== (g->i_fin-g->i_debut-1) ? g->i_fin-g->i_debut-1 : i+1); k<=fk; k++ )
+			{
+				for( l=(j==0?0:j-1), fl=(j== (g->j_fin-g->j_debut-1) ? g->j_fin-g->j_debut-1 : j+1); l<=fl; l++)
+				{
+					if( !( i==k && j==l ) )
+					{
+						if( g->plateau[k][l].etat == 1)
+						{
+							nbc++; 
+						}
+					}
+				}
+			}
+
+			if( g->plateau[i][j].etat == 1)
+			{
+				if( (nbc > 3) || (nbc < 2) )
+				{
+					g->plateau[i][j].petat = 0; 
+				}
+			}
+			else if( g->plateau[i][j].etat == 0)
+			{
+				if( nbc == 3 )
+				{
+					g->plateau[i][j].petat = 1; 
+				}
+			}
+		}
+	}
+
+	for( i=0; i<=(g->i_fin-g->i_debut); i++ )
+	{
+		for( j=0; j<=(g->j_fin-g->j_debut); j++ )
+		{
+			g->plateau[i][j].etat = g->plateau[i][j].petat; 
+		}
+	}
+
+	return g;
+}
+
 void afficherGrille(Grille * g)
 {
 	int i, j;

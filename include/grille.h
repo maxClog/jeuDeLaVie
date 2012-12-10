@@ -13,6 +13,7 @@ typedef struct StrGrille
 } Grille;
 
 Grille * init(int, int);
+Grille * evolution(Grille *);
 void afficherGrille(Grille *);
 Grille * decoupe(Grille *, int, int);
 void free_grille(Grille *);

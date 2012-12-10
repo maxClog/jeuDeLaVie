@@ -35,18 +35,24 @@ int main()
 	// Grille créé
 	
 	Liste * l;
+	// Découpage de la grille en tas de cellule qu'on mets dans une liste
 	l = parcoursGrille(g);
 	
-	afficherListe(l);
-
-	Grille * gr = init(H_PLATEAU, L_PLATEAU);
+	afficherGrille(g);
 	
-	gr = recollageGrille(gr, l);
+	// Evolution de chaques grilles dans la liste
+	Liste * q = l;
+	do
+	{
+		q->g = evolution(q->g);
+		q = q->suiv;
+	}while(q != NULL);
 	
-	afficherGrille(gr);
+	printf("\n--EVOLUTION--\n");
+	// On réassemble la liste de grille dans la grille de départ
+	g = recollageGrille(g, l);
 	
-	free_grille(g);
-	free_grille(gr);
+	afficherGrille(g);
 	
 	return 0;
 }

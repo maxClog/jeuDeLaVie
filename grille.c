@@ -31,6 +31,19 @@ Grille * init(int h, int l)
 	return g;
 }
 
+Grille * resetMarquage(Grille * g)
+{
+	int i,j;
+	for(i=0;i<=(g->i_fin-g->i_debut);i++)
+	{
+		for(j=0;j<=(g->j_fin-g->j_debut);j++)
+		{
+			g->plateau[i][j].marquer = 0;
+		}
+	}
+	return g;
+}
+
 Grille * lectureFichier(char * nom_fichier)
 {
 	Grille * g;
@@ -144,10 +157,12 @@ void afficherGrille(Grille * g)
 		{
 			if(g->plateau[i][j].etat == 1)
 				printf("X");
+			else if(g->plateau[i][j].marquer == 1)
+				printf("M");
 			else
 				printf("-");
 		}
-		printf("\n");
+		printf("\n\r");
 	}
 }
 
@@ -228,7 +243,6 @@ Grille * decoupe(Grille * g, int x, int y)
 			nouvelleGrille->plateau[k][l] = g->plateau[i][j];
 		}
 	}
-	
 	return nouvelleGrille;
 }
 

@@ -132,7 +132,6 @@ Liste * parcoursGrille(Grille * g)
 			}
 		}
 	}
-	
 	return l;
 }
 

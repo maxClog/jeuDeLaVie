@@ -16,6 +16,7 @@ typedef struct StrGrille
 } Grille;
 
 Grille * init(int, int);
+Grille * resetMarquage(Grille *);
 Grille * lectureFichier(char *);
 Grille * evolution(Grille *);
 void afficherGrille(Grille *);

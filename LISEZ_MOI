@@ -1,0 +1,28 @@
+Thomas GOSSET, 09/11/2012, Jeu de la vie
+
+Compilation 
+===========
+
+make. 
+
+
+Commande 
+========
+
+Pendant le programme, à tout moment : 
+r : remet le plateau à l'état initial (relis le fichier).
+p : agmente la vitesse de génération. (*2)
+m : diminue la vitesse. (/2)
+q : terminer le programme proprement.  
+
+
+Lecture depuis un fichier
+=========================
+
+jeudelavie <nomfichier> pour lancer le jeu à partir d'un fichier. 
+
+Sur la première ligne du fichier aparait deux entiers correspondant 
+respectivement à la largeur et la hauteur de la grille. 
+La grille est représenté sur les lignes suivantes. 
+Cellule vivante : 'V', morte : ' '. 
+Inutile de compléter les lignes  avec des cellule morte. 

@@ -3,6 +3,34 @@
 
 #include <stdio.h>
 
+Grille * init(int h, int l)
+{
+	int i,j;
+	Grille * g = (Grille*)malloc(sizeof(Grille));
+	
+	g->i_fin = h - 1;
+	g->j_fin = l - 1;
+	
+	g->i_debut = 0;
+	g->j_debut = 0;
+	
+	// Allocation du plateau
+	g->plateau = (Cellule**)malloc(h * sizeof(Cellule*));
+	for(i = 0 ; i < h ; i++)
+	{
+		g->plateau[i] = (Cellule*)malloc(l * sizeof(Cellule));
+		for(j = 0 ; j < l ; j++)
+		{
+			Cellule c;
+			c.etat = 0;
+			c.petat = 0;
+			c.marquer = 0;
+			g->plateau[i][j] = c;
+		}
+	}
+	return g;
+}
+
 void afficherGrille(Grille * g)
 {
 	int i, j;

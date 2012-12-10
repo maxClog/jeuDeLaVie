@@ -1,0 +1,13 @@
+60 40                                      
+
+                          V                
+                       VVVV    V      
+              V       VVVV     V    
+             V V      V  V         VV
+            V   VV    VVVV         VV 
+ VV         V   VV     VVVV
+ VV         V   VV        V
+             V V
+              V
+
+

@@ -4,6 +4,7 @@
 typedef struct StrCellule
 {
 	int etat;
+	int petat;
 	int marquer;
 } Cellule;
 

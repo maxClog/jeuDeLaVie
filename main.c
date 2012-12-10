@@ -8,29 +8,8 @@
 
 int main()
 {
-	int i, j;
 	// Structure contenant le plateau du jeux
-	Grille * g = (Grille*)malloc(sizeof(Grille));
-	
-	g->i_fin = H_PLATEAU - 1;
-	g->j_fin = L_PLATEAU - 1;
-	
-	g->i_debut = 0;
-	g->j_debut = 0;
-	
-	// Allocation du plateau
-	g->plateau = (Cellule**)malloc(H_PLATEAU * sizeof(Cellule*));
-	for(i = 0 ; i < H_PLATEAU ; i++)
-	{
-		g->plateau[i] = (Cellule*)malloc(L_PLATEAU * sizeof(Cellule));
-		for(j = 0 ; j < L_PLATEAU ; j++)
-		{
-			Cellule c;
-			c.etat = 0;
-			c.marquer = 0;
-			g->plateau[i][j] = c;
-		}
-	}
+	Grille * g = init(H_PLATEAU, L_PLATEAU);
 	
 	// On defini quelques cellules
 	
@@ -60,27 +39,7 @@ int main()
 	
 	afficherListe(l);
 
-	Grille * gr = (Grille*)malloc(sizeof(Grille));
-	
-	gr->i_fin = H_PLATEAU - 1;
-	gr->j_fin = L_PLATEAU - 1;
-	
-	gr->i_debut = 0;
-	gr->j_debut = 0;
-	
-	// Allocation du plateau
-	gr->plateau = (Cellule**)malloc(H_PLATEAU * sizeof(Cellule*));
-	for(i = 0 ; i < H_PLATEAU ; i++)
-	{
-		gr->plateau[i] = (Cellule*)malloc(L_PLATEAU * sizeof(Cellule));
-		for(j = 0 ; j < L_PLATEAU ; j++)
-		{
-			Cellule c;
-			c.etat = 0;
-			c.marquer = 0;
-			gr->plateau[i][j] = c;
-		}
-	}
+	Grille * gr = init(H_PLATEAU, L_PLATEAU);
 	
 	gr = recollageGrille(gr, l);
 	

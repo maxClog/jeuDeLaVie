@@ -7,4 +7,4 @@ main : ${Objets} makefile
 %.o: %.c 
 	gcc -Wall -g -c $<
 clean:
-	rm *.o *~ main
+	rm *.o *~ include/*~ main

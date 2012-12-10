@@ -12,6 +12,7 @@ typedef struct StrGrille
 	int j_fin;
 } Grille;
 
+Grille * init(int, int);
 void afficherGrille(Grille *);
 Grille * decoupe(Grille *, int, int);
 

@@ -44,6 +44,19 @@ Grille * resetMarquage(Grille * g)
 	return g;
 }
 
+Grille * resetGrille(Grille * g)
+{
+	int i,j;
+	for(i=0;i<=(g->i_fin-g->i_debut);i++)
+	{
+		for(j=0;j<=(g->j_fin-g->j_debut);j++)
+		{
+			g->plateau[i][j].etat = 0;
+		}
+	}
+	return g;
+}
+
 Grille * lectureFichier(char * nom_fichier)
 {
 	Grille * g;
@@ -98,17 +111,17 @@ Grille * evolution(Grille * g)
 {
 	int i, j, k, fk, l, fl, nbc; 
 	
-	for( i=0; i<(g->i_fin - g->i_debut); i++ )
+	for( i=0; i<=(g->i_fin - g->i_debut); i++ )
 	{
-		for( j=0; j<(g->j_fin - g->j_debut); j++ )
+		for( j=0; j<=(g->j_fin - g->j_debut); j++ )
 		{
 			// Check de la case actuelle 
 			nbc = 0; 
 			g->plateau[i][j].petat = g->plateau[i][j].etat; 
 
-			for( k= (i==0 ? 0 : i-1), fk = (i== (g->i_fin-g->i_debut-1) ? g->i_fin-g->i_debut-1 : i+1); k<=fk; k++ )
+			for( k= (i==0 ? 0 : i-1), fk = (i== (g->i_fin-g->i_debut) ? g->i_fin-g->i_debut : i+1); k<=fk; k++ )
 			{
-				for( l=(j==0?0:j-1), fl=(j== (g->j_fin-g->j_debut-1) ? g->j_fin-g->j_debut-1 : j+1); l<=fl; l++)
+				for( l=(j==0?0:j-1), fl=(j== (g->j_fin-g->j_debut) ? g->j_fin-g->j_debut : j+1); l<=fl; l++)
 				{
 					if( !( i==k && j==l ) )
 					{
@@ -158,10 +171,11 @@ void afficherGrille(Grille * g)
 			if(g->plateau[i][j].etat == 1)
 				printf("X");
 			else
-				printf("-");
+				printf("_");
 		}
 		printf("\n\r");
 	}
+	printf("\n\r");
 }
 
 Grille * decoupe(Grille * g, int x, int y)
@@ -176,7 +190,7 @@ Grille * decoupe(Grille * g, int x, int y)
 	
 	Grille * nouvelleGrille = (Grille*)malloc(sizeof(Grille));
 	
-	// On a une cellule vivante à la position i,j
+	// On a une cellule vivante à la position x,y
 	i_debut = x;
 	j_debut = y;
 	
@@ -190,9 +204,9 @@ Grille * decoupe(Grille * g, int x, int y)
 		f = defiler(f);
 		
 		// On parcours les cases alentours
-		for(k = i_actuel-1;k<=i_actuel+1;k++)
+		for(k = i_actuel-2;k<=i_actuel+2;k++)
 		{
-			for(l = j_actuel-1 ; l<=j_actuel+1;l++)
+			for(l = j_actuel-2 ; l<=j_actuel+2;l++)
 			{
 				if((k != i_actuel || l != j_actuel) && (k >= g->i_debut && k <= g->i_fin && l >= g->j_debut && l <= g->j_fin))
 				{

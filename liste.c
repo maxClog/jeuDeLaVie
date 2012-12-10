@@ -102,7 +102,8 @@ void afficherListe(Liste * l)
 	do
 	{
 		afficherGrille(q->g);
-		printf("\n-------------------------------\n");
+		printf("\n\r");
+		printf("(%d,%d) : (%d,%d)\n\r", q->g->i_debut, q->g->i_fin, q->g->j_debut, q->g->j_fin);
 		q = q->suiv;
 	}while(q != NULL);
 }
@@ -121,9 +122,9 @@ Liste * parcoursGrille(Grille * g)
 	Liste * l = nouvelleListe();
 	Grille * h = NULL;
 	
-	for(i=0;i<(g->i_fin-g->i_debut);i++)
+	for(i=0;i<=(g->i_fin-g->i_debut);i++)
 	{
-		for(j=0;j<(g->j_fin - g->j_debut);j++)
+		for(j=0;j<=(g->j_fin - g->j_debut);j++)
 		{
 			if(g->plateau[i][j].etat == 1 && g->plateau[i][j].marquer == 0)
 			{
@@ -145,7 +146,7 @@ Grille * recollageGrille(Grille * g, Liste * l)
 {
 	if(listeEstVide(l))
 	{
-		return NULL;
+		return g;
 	}
 	else
 	{
@@ -169,12 +170,13 @@ Grille * assembler(Grille * g, Grille * main)
 {
 	int i,j;
 	int k,l;
-	for(i=g->i_debut, k=0;i<g->i_fin;i++, k++)
+	for(i=g->i_debut, k=0;i<=g->i_fin;i++, k++)
 	{
-		for(j=g->j_debut, l=0;j<g->j_fin;j++, l++)
+		for(j=g->j_debut, l=0;j<=g->j_fin;j++, l++)
 		{
-			// On va parcourir les deux grilles en ajoutant les cellules de g à main
-			main->plateau[i][j] = g->plateau[k][l];
+			// On change la cellule s'il y a un changement d'etat de morte à vivante
+			if(main->plateau[i][j].etat == 0 && g->plateau[k][l].etat == 1)
+				main->plateau[i][j] = g->plateau[k][l];
 		}
 	}
 	return main;

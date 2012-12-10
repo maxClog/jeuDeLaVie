@@ -15,6 +15,8 @@ int main(int argc, char ** argv)
 	struct timeval tv = { 0, 0 };
 	fd_set readfds, readfds_cp;
 	Grille * g = NULL;
+	Liste * l = NULL;
+	Liste * q = NULL;
 
 	if(argc == 2)
 	{
@@ -31,7 +33,7 @@ int main(int argc, char ** argv)
 		c.petat = 1;
 		
 		// départ 
-		g->plateau[4][4] = c; 
+		/*g->plateau[4][4] = c; 
 		g->plateau[5][5] = c; 
 		g->plateau[5][6] = c; 
 		g->plateau[5][7] = c; 
@@ -39,10 +41,28 @@ int main(int argc, char ** argv)
 		
 		g->plateau[4][8] = c; 
 		g->plateau[3][8] = c; 
-		g->plateau[2][7] = c; 
-	}
-
+		g->plateau[2][7] = c;*/
+		
+		g->plateau[1][6] = c;
+		g->plateau[1][7] = c;
+		g->plateau[2][5] = c;
+		g->plateau[3][2] = c;
+		g->plateau[3][3] = c;
+		g->plateau[3][7] = c;
+		g->plateau[4][3] = c;
+		g->plateau[4][5] = c;
+		g->plateau[6][2] = c;
+		g->plateau[6][3] = c;
+		g->plateau[6][6] = c;
+		g->plateau[7][2] = c;
+		g->plateau[7][3] = c;
+		g->plateau[7][7] = c;
+		g->plateau[8][2] = c;
+		
+	}	
 	// fin départ 
+	
+	afficherGrille(g);
 	
 	mode_raw(1); 
 
@@ -80,16 +100,25 @@ int main(int argc, char ** argv)
 
 			if( tv.tv_sec == 0 && tv.tv_usec == 0 )
 			{
-				g = evolution(g);
+				l = parcoursGrille(g);
+				q = l;
+				do
+				{
+					q->g = evolution(q->g);
+					q = q->suiv;
+				}while(q != NULL);
+				g = resetGrille(g);
+				g = recollageGrille(g, l);
+				g = resetMarquage(g);
 				afficherGrille(g);
 			}
 
-			tv.tv_usec = 500000*vit;
+			tv.tv_usec = 50000*vit;
 		}
 
 	}
 
 	mode_raw(0); 
 	free_grille(g);
-	return EXIT_SUCCESS; 
+	return EXIT_SUCCESS;
 }

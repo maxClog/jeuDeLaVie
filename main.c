@@ -51,6 +51,7 @@ int main()
 	g->plateau[6][2] = c;
 	g->plateau[7][3] = c;
 	g->plateau[8][4] = c;
+	
 		
 	// Grille créé
 	
@@ -58,6 +59,32 @@ int main()
 	l = parcoursGrille(g);
 	
 	afficherListe(l);
+
+	Grille * gr = (Grille*)malloc(sizeof(Grille));
+	
+	gr->i_fin = H_PLATEAU - 1;
+	gr->j_fin = L_PLATEAU - 1;
+	
+	gr->i_debut = 0;
+	gr->j_debut = 0;
+	
+	// Allocation du plateau
+	gr->plateau = (Cellule**)malloc(H_PLATEAU * sizeof(Cellule*));
+	for(i = 0 ; i < H_PLATEAU ; i++)
+	{
+		gr->plateau[i] = (Cellule*)malloc(L_PLATEAU * sizeof(Cellule));
+		for(j = 0 ; j < L_PLATEAU ; j++)
+		{
+			Cellule c;
+			c.etat = 0;
+			c.marquer = 0;
+			gr->plateau[i][j] = c;
+		}
+	}
+	
+	gr = recollageGrille(gr, l);
+	
+	afficherGrille(gr);
 	
 	return 0;
 }

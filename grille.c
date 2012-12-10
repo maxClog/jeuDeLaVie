@@ -49,7 +49,7 @@ Grille * decoupe(Grille * g, int x, int y)
 		{
 			for(l = j_actuel-1 ; l<=j_actuel+1;l++)
 			{
-				if(k != i_actuel || l != j_actuel)
+				if((k != i_actuel || l != j_actuel) && (k >= g->i_debut && k <= g->i_fin && l >= g->j_debut && l <= g->j_fin))
 				{
 					// Obtenir les extremités du tableau
 					if(k < i_debut)

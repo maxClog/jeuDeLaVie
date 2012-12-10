@@ -20,7 +20,10 @@ Liste * ajoutQueue(Grille *, Liste *);
 Liste * supprTete(Liste *);
 Liste * supprQueue(Liste *);
 int listeEstVide(Liste *);
+int tailleListe(Liste *);
 void afficherListe(Liste *);
 Liste * parcoursGrille(Grille *);
+Grille * assembler(Grille *, Grille *);
+Grille * recollageGrille(Grille *, Liste *);
 
 #endif

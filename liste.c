@@ -79,6 +79,23 @@ int listeEstVide(Liste * l)
 		return 0;
 }
 
+int tailleListe(Liste * l)
+{
+	int compteur = 0;
+	if(listeEstVide(l))
+		return 0;
+	else
+	{
+		Liste * q = l;
+		while(q != NULL)
+		{
+			compteur++;
+			q = q->suiv;
+		}
+		return compteur;
+	}
+}
+
 void afficherListe(Liste * l)
 {
 	Liste * q = l;
@@ -117,4 +134,49 @@ Liste * parcoursGrille(Grille * g)
 	}
 	
 	return l;
+}
+
+/**
+ * Réassemble la grille avec les nouveau paramètres
+ * @params : La grille principale contenant toutes les cellules
+ * @params : La liste de grille retournées par les clients
+ * @return : La grille complete que l'on va affiché
+ */
+Grille * recollageGrille(Grille * g, Liste * l)
+{
+	if(listeEstVide(l))
+	{
+		return NULL;
+	}
+	else
+	{
+		Liste * q = l;
+		do
+		{
+			g = assembler(q->g, g);
+			q = q->suiv;
+		}while(q != NULL);
+	}
+	return g;
+}
+
+/**
+ * Integre la premiere grille passé en parametre, dans la deuxieme
+ * @param : La grille retournée par un des clients
+ * @param : La grille principale contenant toutes les cellules
+ * @return : La grille principale avec la nouvelle grille insérer
+ */
+Grille * assembler(Grille * g, Grille * main)
+{
+	int i,j;
+	int k,l;
+	for(i=g->i_debut, k=0;i<g->i_fin;i++, k++)
+	{
+		for(j=g->j_debut, l=0;j<g->j_fin;j++, l++)
+		{
+			// On va parcourir les deux grilles en ajoutant les cellules de g à main
+			main->plateau[i][j] = g->plateau[k][l];
+		}
+	}
+	return main;
 }

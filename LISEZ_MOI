@@ -24,5 +24,5 @@ jeudelavie <nomfichier> pour lancer le jeu à partir d'un fichier.
 Sur la première ligne du fichier aparait deux entiers correspondant 
 respectivement à la largeur et la hauteur de la grille. 
 La grille est représenté sur les lignes suivantes. 
-Cellule vivante : 'V', morte : ' '. 
-Inutile de compléter les lignes  avec des cellule morte. 
+Cellule vivante : 'X', morte : '_'. 
+Inutile de compléter les lignes  avec des cellule morte.

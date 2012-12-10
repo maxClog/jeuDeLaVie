@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
 		c.petat = 1;
 		
 		// départ 
-		/*g->plateau[4][4] = c; 
+		g->plateau[4][4] = c; 
 		g->plateau[5][5] = c; 
 		g->plateau[5][6] = c; 
 		g->plateau[5][7] = c; 
@@ -41,23 +41,7 @@ int main(int argc, char ** argv)
 		
 		g->plateau[4][8] = c; 
 		g->plateau[3][8] = c; 
-		g->plateau[2][7] = c;*/
-		
-		g->plateau[1][6] = c;
-		g->plateau[1][7] = c;
-		g->plateau[2][5] = c;
-		g->plateau[3][2] = c;
-		g->plateau[3][3] = c;
-		g->plateau[3][7] = c;
-		g->plateau[4][3] = c;
-		g->plateau[4][5] = c;
-		g->plateau[6][2] = c;
-		g->plateau[6][3] = c;
-		g->plateau[6][6] = c;
-		g->plateau[7][2] = c;
-		g->plateau[7][3] = c;
-		g->plateau[7][7] = c;
-		g->plateau[8][2] = c;
+		g->plateau[2][7] = c;
 		
 	}	
 	// fin départ 

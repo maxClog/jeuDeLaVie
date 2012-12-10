@@ -31,6 +31,56 @@ Grille * init(int h, int l)
 	return g;
 }
 
+Grille * lectureFichier(char * nom_fichier)
+{
+	Grille * g;
+	int l, h, i=0, j=0; 
+	char ligne[1024]; 
+	FILE * fichier = NULL; 
+	struct winsize size;
+	
+	if( (fichier = fopen( nom_fichier, "r" ) ) == NULL )
+	{
+		printf("Erreur d'ouverture du fichier\n");
+		exit(EXIT_FAILURE); 
+	}
+
+	if( fgets(ligne, 1024, fichier) == NULL )
+	{
+		return NULL; 
+	}
+
+	sscanf(ligne, "%d %d ", &l, &h ); 
+	g = init(h, l); 
+
+	if (ioctl(STDIN_FILENO,TIOCGWINSZ, (char*) &size)<0)
+	{
+		printf ("Erreur TIOCGEWINSZ\n");
+	}
+	else if( size.ws_row < h || size.ws_col < l )
+	{
+		printf ("votre terminal comporte %d lignes et %d colones\n\r", 
+			size.ws_row,size.ws_col);
+		printf ("La grille comporte %d lignes et %d colones\n\r", h, l ); 
+		printf ("Risque d'affichage inattendu\n"); 
+		exit(EXIT_SUCCESS); 
+	}
+
+	for(i=0; fgets(ligne, 1024, fichier) != NULL; i++ )
+	{
+		for(j=0; ligne[j] != '\0'; j++ )
+		{
+			if( ligne[j] == 'V' )
+			{
+				g->plateau[i][j].etat = 1;
+			}
+		}
+	}
+
+	fclose(fichier); 
+	return g; 
+}
+
 Grille * evolution(Grille * g)
 {
 	int i, j, k, fk, l, fl, nbc; 

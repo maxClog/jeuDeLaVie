@@ -1,6 +1,9 @@
 #ifndef GRILLE_H
 #define GRILLE_H
 
+#include <unistd.h>
+#include <sys/ioctl.h>
+
 #include "cellule.h"
 
 typedef struct StrGrille
@@ -13,6 +16,7 @@ typedef struct StrGrille
 } Grille;
 
 Grille * init(int, int);
+Grille * lectureFichier(char *);
 Grille * evolution(Grille *);
 void afficherGrille(Grille *);
 Grille * decoupe(Grille *, int, int);

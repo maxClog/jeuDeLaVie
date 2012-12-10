@@ -45,5 +45,8 @@ int main()
 	
 	afficherGrille(gr);
 	
+	free_grille(g);
+	free_grille(gr);
+	
 	return 0;
 }

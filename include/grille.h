@@ -15,5 +15,6 @@ typedef struct StrGrille
 Grille * init(int, int);
 void afficherGrille(Grille *);
 Grille * decoupe(Grille *, int, int);
+void free_grille(Grille *);
 
 #endif

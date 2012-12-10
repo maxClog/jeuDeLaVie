@@ -127,3 +127,15 @@ Grille * decoupe(Grille * g, int x, int y)
 	
 	return nouvelleGrille;
 }
+
+void free_grille(Grille * g)
+{
+	int i; 
+	for(i=0; i<=g->i_fin-g->i_debut; i++)
+	{
+		free(g->plateau[i]); 
+	}
+
+	free(g->plateau);
+	free(g);
+}

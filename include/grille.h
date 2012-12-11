@@ -1,8 +1,18 @@
 #ifndef GRILLE_H
 #define GRILLE_H
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+
+#include <rpc/types.h>
+#include <rpc/xdr.h>
+#include <rpc/rpc.h>
+
+#define PROGNUM 0x20000135
+#define VERSNUM 1
+#define PROCNUM 1
 
 #include "cellule.h"
 
@@ -38,5 +48,9 @@ Grille * decoupe(Grille *, int, int);
 
 // Désalloue la grille
 void free_grille(Grille *);
+
+// Xdr de la grille 
+bool_t xdr_grille(XDR *xdrs, Grille **grille);
+bool_t xdr_cellule(XDR *xdrs, Cellule * c); 
 
 #endif

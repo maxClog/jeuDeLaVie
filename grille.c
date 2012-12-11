@@ -269,3 +269,76 @@ void free_grille(Grille * g)
 	free(g->plateau);
 	free(g);
 }
+
+bool_t xdr_cellule(XDR *xdrs, Cellule * c)
+{
+	return xdr_int(xdrs, &(c->etat) ) 
+		&& xdr_int(xdrs, &(c->petat) )
+		&& xdr_int(xdrs, &(c->marquer) );
+}
+
+bool_t xdr_grille(XDR *xdrs, Grille **g)
+{
+	unsigned int i, j;
+	int i_d,j_d,i_f,j_f;
+	Grille * tmpg;
+
+	switch (xdrs->x_op) 
+	{
+		case XDR_ENCODE : fprintf(stderr,"xdr_grille : ENCODE(%d)\n", xdrs->x_op) ;   break ; 
+		case XDR_DECODE : fprintf(stderr,"xdr_grille : DECODE(%d)\n", xdrs->x_op) ;   break ; 
+		case XDR_FREE :   
+			fprintf(stderr,"xdr_grille : FREE(%d)\n", xdrs->x_op) ;     
+			free_grille(*g); 
+			return TRUE; 
+		break ; 
+		default :         fprintf(stderr,"xdr_grille : default(%d)\n", xdrs->x_op) ;  break ; 
+	}
+
+	// encodage => encoder n
+	if (xdrs->x_op == XDR_ENCODE)
+	{
+		tmpg = *g;
+		i_d = tmpg->i_debut; 
+		i_f = tmpg->i_fin;
+		j_d = tmpg->j_debut;
+		j_f = tmpg->j_fin; 
+
+		if( !( xdr_int(xdrs, &i_d ) 
+			&& xdr_int(xdrs, &j_d )
+			&& xdr_int(xdrs, &i_f )
+			&& xdr_int(xdrs, &j_f ) 
+		) )
+			return FALSE;
+	}
+	else if(xdrs->x_op == XDR_DECODE)
+	{
+		if( !(xdr_int(xdrs, &i_d ) 
+			&& xdr_int(xdrs, &j_d )
+			&& xdr_int(xdrs, &i_f )
+			&& xdr_int(xdrs, &j_f )
+		) )
+			return FALSE ;
+
+		tmpg = init( i_f-i_d+1, j_f-j_d+1);
+		*g = tmpg;
+
+		tmpg->i_debut = i_d;
+		tmpg->i_fin = i_f;
+		tmpg->j_debut = j_d; 
+		tmpg->j_fin = j_f; 
+	}
+
+	for(i=0; i<=(i_f-i_d); i++)
+	{
+		for(j=0; j<=(j_f-j_d); j++)
+		{
+			if(!xdr_cellule(xdrs, &(tmpg->plateau[i][j]) ))
+			{
+				return FALSE ;
+			}
+		}
+	}
+
+	return TRUE ;
+}

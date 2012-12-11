@@ -279,9 +279,11 @@ bool_t xdr_cellule(XDR *xdrs, Cellule * c)
 
 bool_t xdr_grille(XDR *xdrs, Grille **g)
 {
-	unsigned int i, j;
+	unsigned int i, j, c;
 	int i_d,j_d,i_f,j_f;
 	Grille * tmpg;
+	char * tab; 
+	int taille_tampon; 
 
 	switch (xdrs->x_op) 
 	{
@@ -295,7 +297,6 @@ bool_t xdr_grille(XDR *xdrs, Grille **g)
 		default :         fprintf(stderr,"xdr_grille : default(%d)\n", xdrs->x_op) ;  break ; 
 	}
 
-	// encodage => encoder n
 	if (xdrs->x_op == XDR_ENCODE)
 	{
 		tmpg = *g;
@@ -310,6 +311,27 @@ bool_t xdr_grille(XDR *xdrs, Grille **g)
 			&& xdr_int(xdrs, &j_f ) 
 		) )
 			return FALSE;
+
+		taille_tampon = sizeof(char)*(i_f-i_d+1)*(j_f-j_d+1);
+		tab = malloc(taille_tampon ); 
+		for(c=0, i=0; i<=(i_f-i_d); i++)
+		{
+			for(j=0; j<=(j_f-j_d); j++)
+			{
+				tab[c] = tmpg->plateau[i][j].etat; 
+				c++; 
+			}
+		}
+
+		if(!xdr_bytes(xdrs, &tab, &taille_tampon, taille_tampon) )
+		{
+			free(tab) ;
+			return FALSE ;
+		}
+		else
+		{
+			free(tab) ;
+		}
 	}
 	else if(xdrs->x_op == XDR_DECODE)
 	{
@@ -327,17 +349,25 @@ bool_t xdr_grille(XDR *xdrs, Grille **g)
 		tmpg->i_fin = i_f;
 		tmpg->j_debut = j_d; 
 		tmpg->j_fin = j_f; 
-	}
+		taille_tampon = sizeof(char)*(i_f-i_d+1)*(j_f-j_d+1);
+		tab = malloc(taille_tampon ); 
 
-	for(i=0; i<=(i_f-i_d); i++)
-	{
-		for(j=0; j<=(j_f-j_d); j++)
+		if(!xdr_bytes(xdrs, &tab, &taille_tampon, taille_tampon) )
 		{
-			if(!xdr_cellule(xdrs, &(tmpg->plateau[i][j]) ))
+			free(tab) ;
+			return FALSE ;
+		}
+
+		for(i=0, c=0; i<=(i_f-i_d); i++)
+		{
+			for(j=0; j<=(j_f-j_d); j++)
 			{
-				return FALSE ;
+				tmpg->plateau[i][j].etat=tab[c]; 
+				c++; 
 			}
 		}
+
+		free(tab) ;
 	}
 
 	return TRUE ;

@@ -3,7 +3,7 @@
 
 typedef struct StrCellule
 {
-	int etat;
+	char etat;
 	int petat;
 	int marquer;
 } Cellule;

@@ -1,12 +1,11 @@
 #include "grille.h"
 
+#define TAILLE 16 * 1024 
+
 int main (int argc, char *argv[])
 {
-	Grille *pg = init(2,6);
+	Grille *pg = init(93,93);
 	Grille *pres ; // pointeur sur la grille résultat 
-
-	afficherGrille(pg); 
-
 	enum clnt_stat stat ;
 
 	if (argc != 3)

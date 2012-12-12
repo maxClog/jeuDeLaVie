@@ -15,6 +15,7 @@ int main (int argc, char *argv[])
 {
 	Grille *pg = lectureFichier("models/canon-glisseur.txt");
 	Grille *pres ; // pointeur sur la grille résultat 
+	Grille *pg_cpy; 
 	int c=1, t, nfds; 
 	float vit=1; 
 	enum clnt_stat stat ;
@@ -27,7 +28,7 @@ int main (int argc, char *argv[])
 	int sock_client; 
 	socklen_t addrlen; 
 	liste lsc=liste_init(); 
-	int port=strtol(argv[1], NULL, 10); 
+	int port; 
 	str_client * strc; 
 
 	if (argc != 2)
@@ -37,7 +38,8 @@ int main (int argc, char *argv[])
 	}
 
 	/*
-		Création de la socket pour les vendeurs 
+		Création de la socket pour les clients 
+		souhaitant participer 
 	*/
 
 
@@ -48,6 +50,7 @@ int main (int argc, char *argv[])
 	}
 
 	my_addr.sin_family = AF_INET; 
+	port=strtol(argv[1], NULL, 10); 
 	my_addr.sin_port = htons(port); 
 	my_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	addrlen = sizeof(struct sockaddr_in); 
@@ -71,23 +74,32 @@ int main (int argc, char *argv[])
 	while(c)
 	{
 
-		while( strc = liste_suiv(lsc) )
+		while( (strc = liste_suiv(lsc) ) != NULL )
 		{
-			stat = callrpc( strc->host, PROGNUM, VERSNUM, 1, 
-				(xdrproc_t)xdr_grille, (char*)&pg, 
-				(xdrproc_t)xdr_grille, (char *)&pres);
-
-			if (stat != RPC_SUCCESS)
+			switch( strc->etat )
 			{
-				fprintf(stderr,"client, erreur dans callrpc : ") ;
-				clnt_perrno(stat) ;
-				fprintf(stderr,"\n") ;
-				liste_sup(lsc, strc, cb_strc_free ); 
-			}
-			else
-			{
-				free(pg);
-				pg = pres; 
+				case CLIENT_ATTENTE :
+					// Si grille en attente de tratiement : mettre la grille 
+					if( strc->g == NULL )
+					{
+						strc->g = grille_cpy(pg); 
+						pthread_cond_signal(strc->cond);
+					}
+					else
+					{
+						free_grille(pg); 
+						pg = strc->g; 	
+						strc->g =NULL; 
+					}
+				break; 
+				case CLIENT_TRAITEMENT : 
+					// Ne fait rien 
+				break; 
+				case CLIENT_DECONNECTE :
+					// Libéré le thread 
+					pthread_join(*(strc->t), NULL); 
+					liste_sup(lsc, strc, cb_strc_free); 
+				break; 
 			}
 		}
 
@@ -130,11 +142,8 @@ int main (int argc, char *argv[])
 				else
 				{
 					// Ajout du client à la liste. 
-					strc = strc_new(); 
-					strcpy(strc->host, inet_ntoa(client_addr.sin_addr) ); 
+					strc = strc_new(inet_ntoa(client_addr.sin_addr) ); 
 					liste_ajt(lsc, strc); 
-
-
 				}
 
 			}
@@ -150,5 +159,6 @@ int main (int argc, char *argv[])
 
 	mode_raw(0); 
 	free_grille(pg); 
+	liste_free(lsc, cb_strc_free); 
 	return 0 ;  
 }

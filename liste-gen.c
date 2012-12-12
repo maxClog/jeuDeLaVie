@@ -12,6 +12,7 @@ void liste_ajt( liste lsb,  void * ele )
 	}
 
 	lsb->prem = e; 
+	lsb->nb_ele++; 
 	liste_debut(lsb); 
 }
 
@@ -42,6 +43,7 @@ liste liste_init(void)
 	liste lsb=malloc(sizeof( struct str_liste) ); ; 
 	lsb->prem = NULL;
 	lsb->act = NULL; 
+	lsb->nb_ele=0; 
 	return lsb; 
 }
 
@@ -76,6 +78,7 @@ void liste_sup(liste lsb, void * sup, void (free_ele( void * ) ) )
 		free(tmp); 
 	}
 	
+	lsb->nb_ele--; 
 	return;
 }
 

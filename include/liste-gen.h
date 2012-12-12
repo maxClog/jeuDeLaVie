@@ -10,6 +10,7 @@ typedef struct str_ele {
 } *liste_element; 
 
 typedef struct str_liste {
+	int nb_ele; 
 	liste_element prem; 
 	liste_element act; 
 	liste_element prec; 

@@ -15,4 +15,4 @@ client : ${Objets} client.o
 	gcc -Wall -Iinclude -g -c $<
 
 clean:
-	rm *.o *~ include/*~ main
+	rm *.o *~ include/*~ main client serveur

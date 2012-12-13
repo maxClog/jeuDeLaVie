@@ -17,7 +17,8 @@ typedef struct {
 	pthread_mutex_t * mutex; 
 	pthread_cond_t * cond; 
 	int etat; 
-	Grille * g; 
+	Grille * entre; 
+	Grille * sorti; 
 } str_client; 
 
 str_client * strc_new();

@@ -79,17 +79,21 @@ int main (int argc, char *argv[])
 			switch( strc->etat )
 			{
 				case CLIENT_ATTENTE :
-					// Si grille en attente de tratiement : mettre la grille 
-					if( strc->g == NULL )
+					// Si grille en attente de traitement : mettre la grille 
+					if( strc->sorti == NULL )
 					{
-						strc->g = grille_cpy(pg); 
+						if( strc->entre != NULL )
+							free_grille(strc->entre); 
+						strc->entre = grille_cpy(pg); 
 						pthread_cond_signal(strc->cond);
 					}
 					else
 					{
 						free_grille(pg); 
-						pg = strc->g; 	
-						strc->g =NULL; 
+						free_grille(strc->entre); 
+						strc->entre = NULL; 
+						pg = strc->sorti; 	
+						strc->sorti = NULL; 
 					}
 				break; 
 				case CLIENT_TRAITEMENT : 
@@ -97,7 +101,6 @@ int main (int argc, char *argv[])
 				break; 
 				case CLIENT_DECONNECTE :
 					// Libéré le thread 
-					pthread_join(*(strc->t), NULL); 
 					liste_sup(lsc, strc, cb_strc_free); 
 				break; 
 			}
@@ -158,7 +161,9 @@ int main (int argc, char *argv[])
 	}
 
 	mode_raw(0); 
-	free_grille(pg); 
 	liste_free(lsc, cb_strc_free); 
-	return 0 ;  
+	free_grille(pg); 
+	close(sock_client); 
+
+	return 0;  
 }

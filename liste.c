@@ -278,7 +278,7 @@ Grille * recollageGrille(Grille * g, Liste * l)
  * @return : La grille principale avec la nouvelle grille insérer
  */
 Grille * assembler(Grille * g, Grille * main)
-{
+{	
 	int i,j;
 	int k,l;
 	for(i=g->i_debut, k=0;i<=g->i_fin;i++, k++)

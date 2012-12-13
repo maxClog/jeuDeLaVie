@@ -34,28 +34,30 @@ int main(int argc, char ** argv)
 		c.petat = 1;
 		
 		// départ 
-		g->plateau[4][4] = c; 
-		g->plateau[5][5] = c; 
-		g->plateau[5][6] = c; 
-		g->plateau[5][7] = c; 
-		g->plateau[5][8] = c; 
+		g->plateau[4][4] = c;
+		g->plateau[5][5] = c;
+		g->plateau[5][6] = c;
+		g->plateau[5][7] = c;
+		g->plateau[5][8] = c;
 		
-		g->plateau[4][8] = c; 
-		g->plateau[3][8] = c; 
+		g->plateau[4][8] = c;
+		g->plateau[3][8] = c;
 		g->plateau[2][7] = c;
 		
 	}	
 	// fin départ 
 	
 	afficherGrille(g);
-	
-	l = decoupeServeur(4, g);
-	//afficherListe(l);
-	//printf("---------\n\r");
-	l = l->suiv->suiv;
-	afficherGrille(l->g);
-	l = decoupeClient(2, l->g);
-	afficherListe(l);
+	l = decoupeServeur(3, g);
+	q = l;
+	do
+	{
+		q->g = evolution(q->g);
+		q = q->suiv;
+	}while(q != NULL);
+	g = resetGrille(g);
+	g = recollageGrille(g, l);
+	afficherGrille(g);	
 	
 	mode_raw(1); 
 

@@ -1,6 +1,6 @@
 Objets=file.o liste.o grille.o console.o 
 
-All : main
+All : main serveur client
 
 main : main.c ${Objets}
 	gcc -Iinclude -o $@ main.c ${Objets}

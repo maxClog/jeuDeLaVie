@@ -52,6 +52,7 @@ Grille * decoupe(Grille *, int, int);
 
 // Désalloue la grille
 void free_grille(Grille *);
+void cb_free_grille( void * p ); 
 
 // 
 Grille * couper(Grille *g, int i_deb, int i_fin, int j_deb, int j_fin ); 

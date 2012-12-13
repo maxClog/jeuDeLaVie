@@ -10,40 +10,27 @@
 
 int main(int argc, char ** argv)
 {
-	Grille * g = lectureFichier("models/canon-glisseur.txt"); 
-	afficherGrille(g); 
+	Grille * g = lectureFichier("models/canon-planeur.txt"); 
 	Grille * tmp; 
-	/*
-	Grille * c1 = couper(g, 0, 10, 0, 5); 
-	afficherGrille(c1); 
+	int cycle=0; 
 
-	Grille * c2 = couper(g, 0, 10, 5, 10); 
-	afficherGrille(c2); 
-
-	Grille * h = init(10,10); 
-	coller(h, c1, 0, 0);
-	coller(h, c2, 0, 5); 
-	afficherGrille(h); 
-	*/
-
-	while( 1)
+	while( cycle < 100)
 	{
 
-		liste l = explode_grille(g, 5); 
+		liste l = explode_grille(g, 8); 
 
 		while( (tmp = liste_suiv(l) ) != NULL )
 		{
-			printf("===========\n"); 
-			afficherGrille(tmp); 
 			tmp = evolution(tmp); 
-			afficherGrille(tmp); 
-			printf("===========\n"); 
 		}
 
 		tmp = implode_grille(g, l); 
 		afficherGrille(g); 
-		usleep(100000); 
+		usleep(50000); 
+		liste_free(l, cb_free_grille); 
+		cycle++; 
 	}
-		
+
+	free_grille(g); 
 	return EXIT_SUCCESS;
 }

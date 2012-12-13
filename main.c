@@ -34,23 +34,31 @@ int main(int argc, char ** argv)
 		c.petat = 1;
 		
 		// départ 
-		g->plateau[4][4] = c; 
-		g->plateau[5][5] = c; 
-		g->plateau[5][6] = c; 
-		g->plateau[5][7] = c; 
-		g->plateau[5][8] = c; 
+		g->plateau[4][4] = c;
+		g->plateau[5][5] = c;
+		g->plateau[5][6] = c;
+		g->plateau[5][7] = c;
+		g->plateau[5][8] = c;
 		
-		g->plateau[4][8] = c; 
-		g->plateau[3][8] = c; 
+		g->plateau[4][8] = c;
+		g->plateau[3][8] = c;
 		g->plateau[2][7] = c;
 		
 	}	
 	// fin départ 
 	
 	afficherGrille(g);
-	
-	l = decoupeServeur(6, g);
-	afficherListe(l);
+	/*l = decoupeServeur(2, g);
+	q = l;
+	do
+	{
+		q->g = evolution(q->g);
+		q = q->suiv;
+	}while(q != NULL);
+	g = resetGrille(g);
+	g = recollageGrille(g, l);
+	g = resetMarquage(g);
+	afficherGrille(g);*/
 	
 	mode_raw(1); 
 
@@ -88,8 +96,7 @@ int main(int argc, char ** argv)
 
 			if( tv.tv_sec == 0 && tv.tv_usec == 0 )
 			{
-				/*l = parcoursGrille(g);
-				printf("Taille = %d\n\r", tailleListe(l));
+				l = decoupeServeur(2, g);
 				q = l;
 				do
 				{
@@ -99,10 +106,10 @@ int main(int argc, char ** argv)
 				g = resetGrille(g);
 				g = recollageGrille(g, l);
 				g = resetMarquage(g);
-				afficherGrille(g);*/
+				afficherGrille(g);
 			}
 
-			tv.tv_usec = 50000*vit;
+			tv.tv_usec = 500000*vit;
 		}
 
 	}

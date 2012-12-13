@@ -189,8 +189,60 @@ Liste * decoupeServeur(int nbClients, Grille * g_princ)
 		l = ajoutQueue(g, l);
 		
 		// On rééquilibre les variables
-		debut = fin;
+		debut = fin-1;
 		fin = (k == nbClients - 2 ? largeur - 1 : debut + nbDeTrames);
+	}
+	return l;
+}
+
+Liste * decoupeClient(int nbCores, Grille * g_princ)
+{
+	Liste * l = nouvelleListe();
+	int hauteur = g_princ->i_fin - g_princ->i_debut + 1;
+	int largeur = g_princ->j_fin - g_princ->j_debut + 1;
+	int nbDeTrames;
+	int debut, fin;
+	int i,j,k,m;
+	
+	if(nbCores == 0)
+		return NULL;
+	else if(nbCores == 1)
+	{
+		l = ajoutQueue(g_princ, l);
+		return l;
+	}
+	else if(nbCores > hauteur)
+		nbCores = hauteur;
+	
+	nbDeTrames = hauteur / nbCores;
+	debut = 0;
+	fin = debut + nbDeTrames;
+	
+	// Decoupe de la grille en nbDeTrames parties
+	for(k=0;k<nbCores;k++)
+	{
+		// Initialise la grille à la bonne taille
+		Grille * g = init(fin-debut+1, largeur);
+		g->j_debut = 0;
+		g->j_fin = largeur-1;
+		g->i_debut = debut;
+		g->i_fin = fin;
+		
+		// On decoupe une trame
+		for(j=0;j<largeur;j++) // Parcours de la largeur
+		{
+			for(i=debut, m=0;i<=fin;i++, m++) // Parcours de la hauteur
+			{
+				g->plateau[m][j] = g_princ->plateau[i][j];
+			}
+		}
+		
+		// On enregistre la grille
+		l = ajoutQueue(g, l);
+		
+		// On rééquilibre les variables
+		debut = fin;
+		fin = (k == nbCores - 2 ? hauteur - 1 : debut + nbDeTrames);
 	}
 	return l;
 }
@@ -226,7 +278,7 @@ Grille * recollageGrille(Grille * g, Liste * l)
  * @return : La grille principale avec la nouvelle grille insérer
  */
 Grille * assembler(Grille * g, Grille * main)
-{
+{	
 	int i,j;
 	int k,l;
 	for(i=g->i_debut, k=0;i<=g->i_fin;i++, k++)

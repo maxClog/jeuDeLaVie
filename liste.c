@@ -189,7 +189,7 @@ Liste * decoupeServeur(int nbClients, Grille * g_princ)
 		l = ajoutQueue(g, l);
 		
 		// On rééquilibre les variables
-		debut = fin;
+		debut = fin-1;
 		fin = (k == nbClients - 2 ? largeur - 1 : debut + nbDeTrames);
 	}
 	return l;

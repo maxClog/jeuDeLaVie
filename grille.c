@@ -126,18 +126,20 @@ Grille * lectureFichier(char * nom_fichier)
 Grille * evolution(Grille * g)
 {
 	int i, j, k, fk, l, fl, nbc; 
+	int hauteur = g->i_fin - g->i_debut + 1;
+	int largeur = g->j_fin - g->j_debut + 1;
 	
-	for( i=0; i<=(g->i_fin - g->i_debut); i++ )
+	for( i=0; i<hauteur; i++ )
 	{
-		for( j=0; j<=(g->j_fin - g->j_debut); j++ )
+		for( j=0; j<largeur; j++ )
 		{
 			// Check de la case actuelle 
 			nbc = 0; 
 			g->plateau[i][j].petat = g->plateau[i][j].etat; 
 
-			for( k= (i==0 ? 0 : i-1), fk = (i== (g->i_fin-g->i_debut) ? g->i_fin-g->i_debut : i+1); k<=fk; k++ )
+			for( k= (i==0 ? 0 : i-1), fk = (i== hauteur-1 ? hauteur-1 : i+1); k<=fk; k++ )
 			{
-				for( l=(j==0?0:j-1), fl=(j== (g->j_fin-g->j_debut) ? g->j_fin-g->j_debut : j+1); l<=fl; l++)
+				for( l=(j==0?0:j-1), fl=(j== largeur-1 ? largeur-1 : j+1); l<=fl; l++)
 				{
 					if( !( i==k && j==l ) )
 					{
@@ -166,9 +168,9 @@ Grille * evolution(Grille * g)
 		}
 	}
 
-	for( i=0; i<=(g->i_fin-g->i_debut); i++ )
+	for( i=0; i<hauteur; i++ )
 	{
-		for( j=0; j<=(g->j_fin-g->j_debut); j++ )
+		for( j=0; j<largeur; j++ )
 		{
 			g->plateau[i][j].etat = g->plateau[i][j].petat; 
 		}

@@ -48,7 +48,7 @@ int main(int argc, char ** argv)
 	// fin départ 
 	
 	afficherGrille(g);
-	l = decoupeServeur(3, g);
+	/*l = decoupeServeur(2, g);
 	q = l;
 	do
 	{
@@ -57,7 +57,8 @@ int main(int argc, char ** argv)
 	}while(q != NULL);
 	g = resetGrille(g);
 	g = recollageGrille(g, l);
-	afficherGrille(g);	
+	g = resetMarquage(g);
+	afficherGrille(g);*/
 	
 	mode_raw(1); 
 
@@ -95,8 +96,7 @@ int main(int argc, char ** argv)
 
 			if( tv.tv_sec == 0 && tv.tv_usec == 0 )
 			{
-				/*l = parcoursGrille(g);
-				printf("Taille = %d\n\r", tailleListe(l));
+				l = decoupeServeur(2, g);
 				q = l;
 				do
 				{
@@ -106,10 +106,10 @@ int main(int argc, char ** argv)
 				g = resetGrille(g);
 				g = recollageGrille(g, l);
 				g = resetMarquage(g);
-				afficherGrille(g);*/
+				afficherGrille(g);
 			}
 
-			tv.tv_usec = 50000*vit;
+			tv.tv_usec = 500000*vit;
 		}
 
 	}

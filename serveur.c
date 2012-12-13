@@ -14,11 +14,8 @@
 int main (int argc, char *argv[])
 {
 	Grille *pg = lectureFichier("models/canon-glisseur.txt");
-	Grille *pres ; // pointeur sur la grille résultat 
-	Grille *pg_cpy; 
 	int c=1, t, nfds; 
 	float vit=1; 
-	enum clnt_stat stat ;
 	struct timeval tv = { 0, 0 };
 	struct sockaddr_in client_addr; 
 	fd_set readfds, readfds_cp;
@@ -116,6 +113,17 @@ int main (int argc, char *argv[])
 					liste_ajt(ls_entre, strc->entre); 
 					strc->entre=NULL; 
 					liste_sup(lsc, strc, cb_strc_free); 
+					if( liste_taille(lsc) == 0 )
+					{
+						nb_morceau=-1; 
+						liste_free(ls_sorti, cb_cc_free); 
+						liste_free(ls_entre, cb_cc_free); 
+						liste_free(lsc, cb_strc_free); 
+						ls_sorti = liste_init(); 
+						ls_entre = liste_init(); 
+						lsc = liste_init(); 
+					}
+
 				break; 
 			}
 		}
@@ -129,6 +137,7 @@ int main (int argc, char *argv[])
 			ls_sorti = liste_init(); 
 			ls_entre = liste_init(); 
 		}
+
 
 		/*
 			check des descripteur de fichiers (entré clavier, client s'annonçant)

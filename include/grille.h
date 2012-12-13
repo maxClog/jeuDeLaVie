@@ -17,6 +17,10 @@
 #include "cellule.h"
 #include "liste-gen.h" 
 
+#define NON_TRAITER 0
+#define TRAITER 1 
+#define EN_COUR 2 
+
 typedef struct StrGrille
 {
 	Cellule ** plateau;
@@ -31,6 +35,7 @@ typedef struct
 	Grille * g; 
 	int x;
 	int y; 
+	int etat; 
 } coupe_capsule; 
 
 // Initialise la grille

@@ -311,14 +311,20 @@ bool_t xdr_grille(XDR *xdrs, Grille **g)
 
 	switch (xdrs->x_op) 
 	{
-		case XDR_ENCODE : fprintf(stderr,"xdr_grille : ENCODE(%d)\n", xdrs->x_op) ;   break ; 
-		case XDR_DECODE : fprintf(stderr,"xdr_grille : DECODE(%d)\n", xdrs->x_op) ;   break ; 
+		case XDR_ENCODE : 
+			//fprintf(stderr,"xdr_grille : ENCODE(%d)\n", xdrs->x_op) ;   
+		break ; 
+		case XDR_DECODE : 
+			//fprintf(stderr,"xdr_grille : DECODE(%d)\n", xdrs->x_op) ;   
+		break ; 
 		case XDR_FREE :   
-			fprintf(stderr,"xdr_grille : FREE(%d)\n", xdrs->x_op) ;     
+			//fprintf(stderr,"xdr_grille : FREE(%d)\n", xdrs->x_op) ;     
 			free_grille(*g); 
 			return TRUE; 
 		break ; 
-		default :         fprintf(stderr,"xdr_grille : default(%d)\n", xdrs->x_op) ;  break ; 
+		default :         
+			//fprintf(stderr,"xdr_grille : default(%d)\n", xdrs->x_op) ;  
+		break ; 
 	}
 
 	if (xdrs->x_op == XDR_ENCODE)
@@ -481,6 +487,7 @@ coupe_capsule * cc_nouveau(Grille * g, int x, int y )
 	c->g = g; 
 	c->x = x; 
 	c->y = y; 
+	c->etat = NON_TRAITER;
 	return c; 
 }
 

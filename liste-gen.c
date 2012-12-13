@@ -148,3 +148,16 @@ int liste_taille(liste l)
 {
 	return l->nb_ele; 
 }
+
+int liste_dedans( liste l, void * p )
+{
+	void * tmp; 
+
+	while( ( tmp = liste_suiv(l) ) != NULL )
+	{
+		if( tmp == p )
+			return 1; 
+	}
+	
+	return 0; 
+}

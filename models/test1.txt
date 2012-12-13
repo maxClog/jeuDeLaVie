@@ -1,25 +1,10 @@
-80 40 
+10 10 
 
-
-
-              V
-               V
-          V    V
-           VVVVV
-
-
-
-       V
-      V
-      VVV
-
-
-
-
-
-
-
-
-                        V
-                      VV
-                       VV
+   V
+   V
+   VVVVVVVV
+   V     V
+   VV    VV
+   V
+   
+   VVV

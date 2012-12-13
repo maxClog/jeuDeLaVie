@@ -111,3 +111,8 @@ void liste_free(liste lsb,  void ( free_ele( void * ) )  )
 
 	free(lsb); 
 }
+
+int liste_taille(liste l)
+{
+	return l->nb_ele; 
+}

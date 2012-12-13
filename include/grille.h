@@ -15,6 +15,7 @@
 #define PROCNUM 1
 
 #include "cellule.h"
+#include "liste-gen.h" 
 
 typedef struct StrGrille
 {
@@ -51,6 +52,12 @@ Grille * decoupe(Grille *, int, int);
 
 // Désalloue la grille
 void free_grille(Grille *);
+
+// 
+Grille * couper(Grille *g, int i_deb, int i_fin, int j_deb, int j_fin ); 
+void coller( Grille * or, Grille * g, int x, int y ); 
+liste explode_grille( Grille * g, int nb ); 
+Grille * implode_grille( Grille * g, liste l ); 
 
 // Xdr de la grille 
 bool_t xdr_grille(XDR *xdrs, Grille **grille);

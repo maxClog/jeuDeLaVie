@@ -1,6 +1,7 @@
 #include "include/grille.h"
 #include "include/file.h"
 
+#include <math.h>
 #include <stdio.h>
 
 Grille * init(int h, int l)
@@ -129,17 +130,17 @@ Grille * evolution(Grille * g)
 	int hauteur = g->i_fin - g->i_debut + 1;
 	int largeur = g->j_fin - g->j_debut + 1;
 	
-	for( i=0; i<hauteur; i++ )
+	for( i=1; i<hauteur-1; i++ )
 	{
-		for( j=0; j<largeur; j++ )
+		for( j=1; j<largeur-1; j++ )
 		{
 			// Check de la case actuelle 
 			nbc = 0; 
 			g->plateau[i][j].petat = g->plateau[i][j].etat; 
 
-			for( k= (i==0 ? 0 : i-1), fk = (i== hauteur-1 ? hauteur-1 : i+1); k<=fk; k++ )
+			for( k=i-1; k<=i+1; k++ )
 			{
-				for( l=(j==0?0:j-1), fl=(j== largeur-1 ? largeur-1 : j+1); l<=fl; l++)
+				for( l=j-1; l<=j+1; l++)
 				{
 					if( !( i==k && j==l ) )
 					{
@@ -168,9 +169,9 @@ Grille * evolution(Grille * g)
 		}
 	}
 
-	for( i=0; i<hauteur; i++ )
+	for( i=1; i<hauteur-1; i++ )
 	{
-		for( j=0; j<largeur; j++ )
+		for( j=1; j<largeur-1; j++ )
 		{
 			g->plateau[i][j].etat = g->plateau[i][j].petat; 
 		}
@@ -288,6 +289,11 @@ void free_grille(Grille * g)
 	free(g);
 }
 
+void cb_free_grille( void * p )
+{
+	free_grille(p);
+}
+
 bool_t xdr_cellule(XDR *xdrs, Cellule * c)
 {
 	return xdr_int(xdrs, &(c->etat) ) 
@@ -389,4 +395,85 @@ bool_t xdr_grille(XDR *xdrs, Grille **g)
 	}
 
 	return TRUE ;
+}
+
+
+Grille * couper(Grille *g, int i_deb, int i_fin, int j_deb, int j_fin )
+{
+	Grille * res = init(i_fin-i_deb+2, j_fin-j_deb+2 ); 
+	int i, j, ig, jg, etat; 
+	i_deb--;
+	i_fin++;
+	j_deb--;
+	j_fin++; 
+
+	for( i=0, ig=i_deb; i<res->i_fin-res->i_debut+1; i++, ig++ )
+	{
+		for(j=0, jg=j_deb; j<res->j_fin-res->j_debut+1; j++, jg++)
+		{
+			if( jg < 0 || jg >= (g->j_fin - g->j_debut +1) || 
+				ig < 0 || ig >= (g->i_fin - g->i_debut +1 ) )
+				etat = 0; 
+			else 
+				etat = g->plateau[ig][jg].etat; 
+
+			res->plateau[i][j].etat = etat; 
+		}
+	}
+
+	return res; 
+}
+
+void coller( Grille * or, Grille * g, int x, int y )
+{
+	int i,j; 	
+	int ig, jg; 
+
+	for( i=x, ig=1; i< (x + g->i_fin - g->i_debut -1); i++, ig++ )
+	{
+		for( j=y, jg=1; j< (y + g->j_fin - g->j_debut -1); j++, jg++ )
+		{
+			if( !(j < 0 || j >= (or->j_fin - or->j_debut +1) || 
+				i < 0 || i >= (or->i_fin - or->i_debut +1 ) ) )
+				or->plateau[i][j].etat = g->plateau[ig][jg].etat; 
+
+		}
+	}
+}
+
+liste explode_grille( Grille * g, int nb )
+{
+	int largeur = g->i_fin - g->i_debut +1; 
+	int t = ceil(largeur / (float)nb); 
+	int i; 
+	int d=0, f=t; 
+	Grille * tmp; 
+	liste l= liste_init(); 
+
+	for( i=0; i<nb; i++ )
+	{
+		tmp = couper(g, 0, g->i_fin-g->i_debut+1, d, f); 
+		d+=t;
+		f+=t; 
+		liste_ajt(l, tmp); 
+	}
+	
+	return l; 
+}
+
+Grille * implode_grille(Grille *g, liste l )
+{
+	int nb = liste_taille(l); 
+	int largeur = g->i_fin - g->i_debut +1; 
+	int t = ceil( (float)largeur / nb); 
+	int v = t*nb-t; 
+	Grille * tmp; 
+	
+	while( (tmp=liste_suiv(l) )!=NULL )
+	{
+		coller(	g, tmp, 0, v);
+		v-=t; 
+	}
+
+	return g; 
 }

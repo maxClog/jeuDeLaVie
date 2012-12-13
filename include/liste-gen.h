@@ -1,5 +1,5 @@
-#ifndef __LISTE_H
-#define __LISTE_H 
+#ifndef __LISTE_GEN_H
+#define __LISTE_GEN_H 
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,5 +22,6 @@ void liste_ajt( liste lsb,  void * b );
 void * liste_suiv(liste lsb); 
 void liste_sup(liste lsb, void * sup, void ( free_ele( void * ) ) ); 
 void liste_free(liste lsb,  void ( free_ele( void * ) )  ); 
+int liste_taille(liste l); 
 
 #endif 

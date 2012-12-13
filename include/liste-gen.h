@@ -23,5 +23,6 @@ void * liste_suiv(liste lsb);
 void liste_sup(liste lsb, void * sup, void ( free_ele( void * ) ) ); 
 void liste_free(liste lsb,  void ( free_ele( void * ) )  ); 
 int liste_taille(liste l); 
+void liste_sup_nf(liste lsb, void * sup ); 
 
 #endif 

@@ -11,23 +11,24 @@
 int main(int argc, char ** argv)
 {
 	Grille * g = lectureFichier("models/canon-planeur.txt"); 
-	Grille * tmp; 
+	coupe_capsule * tmp; 
+	liste l;
 	int cycle=0; 
 
 	while( cycle < 100)
 	{
 
-		liste l = explode_grille(g, 8); 
+		l = explode_grille(g, 8); 
 
 		while( (tmp = liste_suiv(l) ) != NULL )
 		{
-			tmp = evolution(tmp); 
+			tmp->g = evolution(tmp->g); 
 		}
 
 		tmp = implode_grille(g, l); 
 		afficherGrille(g); 
 		usleep(50000); 
-		liste_free(l, cb_free_grille); 
+		liste_free(l, cb_cc_free ); 
 		cycle++; 
 	}
 

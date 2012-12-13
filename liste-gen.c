@@ -49,6 +49,11 @@ liste liste_init(void)
 
 void liste_sup(liste lsb, void * sup, void (free_ele( void * ) ) )
 {
+	if ( lsb->prem == NULL )
+	{
+		return; 
+	}
+
 	liste_element tmp = lsb->prem; 
 	liste_element tmp_avant = NULL; 
 
@@ -75,6 +80,33 @@ void liste_sup(liste lsb, void * sup, void (free_ele( void * ) ) )
 		{
 			free(sup); 
 		}
+		free(tmp); 
+	}
+	
+	lsb->nb_ele--; 
+	return;
+}
+
+void liste_sup_nf(liste lsb, void * sup )
+{
+	liste_element tmp = lsb->prem; 
+	liste_element tmp_avant = NULL; 
+
+	if( tmp->ele == sup )
+	{
+		lsb->prem = tmp->suiv; 
+		free(tmp); 
+	}
+	else
+	{
+		do 
+		{
+			tmp_avant = tmp; 
+			tmp=tmp->suiv; 
+		}
+		while( tmp->ele!=sup ); 
+
+		tmp_avant->suiv = tmp->suiv; 
 		free(tmp); 
 	}
 	

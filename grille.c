@@ -447,12 +447,14 @@ liste explode_grille( Grille * g, int nb )
 	int t = ceil(largeur / (float)nb); 
 	int i; 
 	int d=0, f=t; 
-	Grille * tmp; 
-	liste l= liste_init(); 
+	Grille * gtmp; 
+	coupe_capsule * tmp; 
+	liste l = liste_init(); 
 
 	for( i=0; i<nb; i++ )
 	{
-		tmp = couper(g, 0, g->i_fin-g->i_debut+1, d, f); 
+		gtmp = couper(g, 0, g->i_fin-g->i_debut+1, d, f); 
+		tmp = cc_nouveau(gtmp, 0, d);
 		d+=t;
 		f+=t; 
 		liste_ajt(l, tmp); 
@@ -463,17 +465,34 @@ liste explode_grille( Grille * g, int nb )
 
 Grille * implode_grille(Grille *g, liste l )
 {
-	int nb = liste_taille(l); 
-	int largeur = g->i_fin - g->i_debut +1; 
-	int t = ceil( (float)largeur / nb); 
-	int v = t*nb-t; 
-	Grille * tmp; 
+	coupe_capsule * tmp; 
 	
 	while( (tmp=liste_suiv(l) )!=NULL )
 	{
-		coller(	g, tmp, 0, v);
-		v-=t; 
+		coller(	g, tmp->g, tmp->x, tmp->y);
 	}
 
 	return g; 
+}
+
+coupe_capsule * cc_nouveau(Grille * g, int x, int y )
+{
+	coupe_capsule * c = malloc( sizeof(coupe_capsule) ); 
+	c->g = g; 
+	c->x = x; 
+	c->y = y; 
+	return c; 
+}
+
+void cc_free(coupe_capsule * c )
+{
+	if( c->g != NULL )
+		free_grille(c->g); 
+
+	free(c); 	
+}
+
+void cb_cc_free( void * c )
+{
+	cc_free(c); 
 }

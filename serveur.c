@@ -28,6 +28,10 @@ int main (int argc, char *argv[])
 	int sock_client; 
 	socklen_t addrlen; 
 	liste lsc=liste_init(); 
+	int nb_morceau=0; 
+	liste ls_entre=liste_init(); 
+	liste ls_sorti=liste_init(); 
+	coupe_capsule * tmp_cc; 
 	int port; 
 	str_client * strc; 
 
@@ -63,7 +67,6 @@ int main (int argc, char *argv[])
 	}
 	
 	// Fin init écoute client 
-
 	mode_raw(1); 
 
 	FD_ZERO(&readfds);
@@ -73,6 +76,15 @@ int main (int argc, char *argv[])
 
 	while(c)
 	{
+		/*
+			check des clients 
+		*/
+
+		if( (nb_morceau == -1) && (liste_taille(lsc) > 0 ) )
+		{
+			nb_morceau = liste_taille(lsc); 
+			ls_entre = explode_grille(pg, nb_morceau); 
+		}
 
 		while( (strc = liste_suiv(lsc) ) != NULL )
 		{
@@ -82,17 +94,17 @@ int main (int argc, char *argv[])
 					// Si grille en attente de traitement : mettre la grille 
 					if( strc->sorti == NULL )
 					{
-						if( strc->entre != NULL )
-							free_grille(strc->entre); 
-						strc->entre = grille_cpy(pg); 
-						pthread_cond_signal(strc->cond);
+						if( (tmp_cc = liste_suiv(ls_entre) ) != NULL )
+						{
+							strc->entre = tmp_cc; 
+							liste_sup_nf( ls_entre, tmp_cc ); 
+							pthread_cond_signal(strc->cond);
+						}
 					}
-					else
+					else // Sinon elle a fini, on peux prendre le résultat 
 					{
-						free_grille(pg); 
-						free_grille(strc->entre); 
+						liste_ajt(ls_sorti, strc->entre); 
 						strc->entre = NULL; 
-						pg = strc->sorti; 	
 						strc->sorti = NULL; 
 					}
 				break; 
@@ -106,8 +118,20 @@ int main (int argc, char *argv[])
 			}
 		}
 
-		readfds_cp = readfds; 
+		if( liste_taille(ls_sorti) == nb_morceau )
+		{
+			implode_grille(pg, ls_sorti); 
+			nb_morceau=-1; 
+			liste_free(ls_sorti, cb_cc_free); 
+			liste_free(ls_entre, cb_cc_free); 
+			ls_sorti = liste_init(); 
+			ls_entre = liste_init(); 
+		}
 
+		/*
+			check des descripteur de fichiers (entré clavier, client s'annonçant)
+		*/
+		readfds_cp = readfds; 
 		if( select(nfds, &readfds_cp, NULL, NULL, &tv) != -1 )
 		{
 			if( FD_ISSET(STDIN_FILENO, &readfds_cp ) )

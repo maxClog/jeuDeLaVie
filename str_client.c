@@ -42,7 +42,7 @@ void strc_free(str_client * s )
 	if( s->entre != NULL )
 	{
 		printf("free entre\n"); 
-		free_grille(s->entre); 
+		cc_free(s->entre); 
 	}
 
 	if( s->sorti != NULL )
@@ -65,18 +65,17 @@ void cb_strc_free( void * s )
 void * client_routing(void * arg )
 {
 	str_client * s = arg; 
-	int cont=1; 
 	enum clnt_stat stat; 
 
-	while( cont )
+	while( 1 )
 	{
+		s->etat = CLIENT_ATTENTE; 
 		pthread_cond_wait(s->cond, s->mutex); 
-
-		s->sorti = NULL; 
 		s->etat = CLIENT_TRAITEMENT; 
+		s->sorti = NULL; 
 
 		stat = callrpc( s->host, PROGNUM, VERSNUM, 1, 
-			(xdrproc_t)xdr_grille, (char*)&(s->entre), 
+			(xdrproc_t)xdr_grille, (char*)&(s->entre->g), 
 			(xdrproc_t)xdr_grille, (char *)&(s->sorti) );
 
 		if (stat != RPC_SUCCESS)
@@ -84,12 +83,14 @@ void * client_routing(void * arg )
 			fprintf(stderr,"client, erreur dans callrpc : ") ;
 			clnt_perrno(stat) ;
 			fprintf(stderr,"\n") ;
-			cont=0; 
 			s->etat = CLIENT_DECONNECTE; 
 			pthread_exit(NULL); 
 		}
-
-		s->etat = CLIENT_ATTENTE; 
+		else
+		{
+			free_grille(s->entre->g); 
+			s->entre->g = s->sorti; 
+		}
 	}
 
 	pthread_exit(NULL); 

@@ -26,6 +26,13 @@ typedef struct StrGrille
 	int j_fin;
 } Grille;
 
+typedef struct 
+{
+	Grille * g; 
+	int x;
+	int y; 
+} coupe_capsule; 
+
 // Initialise la grille
 Grille * init(int, int);
 
@@ -59,9 +66,14 @@ Grille * couper(Grille *g, int i_deb, int i_fin, int j_deb, int j_fin );
 void coller( Grille * or, Grille * g, int x, int y ); 
 liste explode_grille( Grille * g, int nb ); 
 Grille * implode_grille( Grille * g, liste l ); 
+void cb_cc_free( void * c ); 
+void cc_free(coupe_capsule * c ); 
+coupe_capsule * cc_nouveau(Grille * g, int x, int y ); 
 
 // Xdr de la grille 
 bool_t xdr_grille(XDR *xdrs, Grille **grille);
 bool_t xdr_cellule(XDR *xdrs, Cellule * c); 
+
+
 
 #endif

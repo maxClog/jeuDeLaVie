@@ -113,6 +113,8 @@ int main (int argc, char *argv[])
 				break; 
 				case CLIENT_DECONNECTE :
 					// Libéré le thread 
+					liste_ajt(ls_entre, strc->entre); 
+					strc->entre=NULL; 
 					liste_sup(lsc, strc, cb_strc_free); 
 				break; 
 			}

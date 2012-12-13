@@ -28,6 +28,9 @@ typedef struct StrGrille
 // Initialise la grille
 Grille * init(int, int);
 
+// Initialise et copy une grille 
+Grille * grille_cpy( Grille * g );
+
 // Remet tous les marquages à 0
 Grille * resetMarquage(Grille *);
 

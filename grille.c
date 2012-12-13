@@ -31,6 +31,22 @@ Grille * init(int h, int l)
 	return g;
 }
 
+Grille * grille_cpy( Grille * g )
+{
+	int i, j; 
+	Grille * r = init(g->i_fin - g->i_debut +1, g->j_fin - g->j_debut +1);
+
+	for( i=0; i<=(g->i_fin - g->i_debut); i++ )
+	{
+		for( j=0; j<=(g->j_fin - g->j_debut); j++ )
+		{
+			r->plateau[i][j] = g->plateau[i][j]; 
+		}
+	}
+
+	return r; 
+}
+
 Grille * resetMarquage(Grille * g)
 {
 	int i,j;

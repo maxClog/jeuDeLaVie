@@ -1,8 +1,9 @@
 #include <time.h>
 
-#include "include/file.h"
-#include "include/liste.h"
-#include "include/console.h"
+#include "file.h"
+#include "liste.h"
+#include "console.h"
+#include "grille.h" 
 
 #define H_PLATEAU 10
 #define L_PLATEAU 10

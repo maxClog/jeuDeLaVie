@@ -1,5 +1,7 @@
 #include "include/liste.h"
 
+#include <math.h>
+
 Liste * nouvelleListe()
 {
 	return NULL;
@@ -132,6 +134,63 @@ Liste * parcoursGrille(Grille * g)
 				l = ajoutQueue(h, l);
 			}
 		}
+	}
+	return l;
+}
+
+Liste * decoupeServeur(int nbClients, Grille * g_princ)
+{
+	Liste * l = nouvelleListe();
+	int hauteur = g_princ->i_fin - g_princ->i_debut + 1;
+	int largeur = g_princ->j_fin - g_princ->j_debut + 1;
+	int nbCellules = hauteur * largeur;
+	int nbCellulesMax = 90*90;
+	int nbDeTrames;
+	int debut, fin;
+	int i,j,k,m;
+	
+	if(nbClients == 0)
+		return NULL;
+	else if(nbClients == 1)
+	{
+		if(nbCellules <= nbCellulesMax)
+		{
+			l = ajoutQueue(g_princ, l);
+			return l;
+		}
+	}
+	else if(nbClients > largeur)
+		nbClients = largeur;
+	
+	nbDeTrames = largeur / nbClients;
+	debut = 0;
+	fin = debut + nbDeTrames;
+	
+	// Decoupe de la grille en nbDeTrames parties
+	for(k=0;k<nbClients;k++)
+	{
+		// Initialise la grille à la bonne taille
+		Grille * g = init(hauteur, fin-debut+1);
+		g->j_debut = debut;
+		g->j_fin = fin;
+		g->i_debut = 0;
+		g->i_fin = hauteur-1;
+		
+		// On decoupe une trame
+		for(j=debut, m=0;j<=fin;j++, m++) // Parcours de la largeur
+		{
+			for(i=0;i<hauteur;i++) // Parcours de la hauteur
+			{
+				g->plateau[i][m] = g_princ->plateau[i][j];
+			}
+		}
+		
+		// On enregistre la grille
+		l = ajoutQueue(g, l);
+		
+		// On rééquilibre les variables
+		debut = fin;
+		fin = (k == nbClients - 2 ? largeur - 1 : debut + nbDeTrames);
 	}
 	return l;
 }

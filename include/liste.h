@@ -41,6 +41,9 @@ void afficherListe(Liste *);
 // Decoupe toute la grille en plusieurs et les places dans une liste
 Liste * parcoursGrille(Grille *);
 
+// Decoupe une grille en trames
+Liste * decoupeServeur(int, Grille *);
+
 // Integre une grille dans l'autre aux bonnes coordonnées
 Grille * assembler(Grille *, Grille *);
 

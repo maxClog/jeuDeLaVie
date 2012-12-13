@@ -49,7 +49,12 @@ int main(int argc, char ** argv)
 	
 	afficherGrille(g);
 	
-	l = decoupeServeur(6, g);
+	l = decoupeServeur(4, g);
+	//afficherListe(l);
+	//printf("---------\n\r");
+	l = l->suiv->suiv;
+	afficherGrille(l->g);
+	l = decoupeClient(2, l->g);
 	afficherListe(l);
 	
 	mode_raw(1); 
